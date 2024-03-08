@@ -88,6 +88,6 @@ public class EnemyAI : MonoBehaviour
         navMeshAgent.SetDestination(idleDestination);
 
         //if I need the enemy to stay in it's area I need to comment this line
-        initialPosition = idleDestination; // Update initialPosition
+        //initialPosition = idleDestination; // Update initialPosition
     }
 }
