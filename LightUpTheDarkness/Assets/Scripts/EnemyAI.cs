@@ -15,6 +15,13 @@ public class EnemyAI : MonoBehaviour
     private Vector3 initialPosition;
     private Vector3 idleDestination;
 
+    [SerializeField] Material IdleMat;
+    [SerializeField] Material FollowMat;
+    [SerializeField] MeshRenderer FaceMeshRenderer;
+
+    // Reference to the flashlight GameObject
+    [SerializeField] GameObject flashlight;
+
     void Start()
     {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
@@ -30,6 +37,8 @@ public class EnemyAI : MonoBehaviour
         switch (currentState)
         {
             case EnemyState.Idle:
+                FaceMeshRenderer.material = IdleMat;
+
                 // Check if the player is within the follow distance
                 if (distanceToPlayer <= followDistance)
                 {
@@ -45,25 +54,34 @@ public class EnemyAI : MonoBehaviour
                 break;
 
             case EnemyState.Follow:
-                // Check if the player is facing the enemy (using dot product)
-                Vector3 directionToEnemy = (transform.position - playerTransform.position).normalized;
-                float dotProduct = Vector3.Dot(playerTransform.forward, directionToEnemy);
+                FaceMeshRenderer.material = FollowMat;
 
-                // If the player is facing the enemy, make the enemy walk back
-                if (dotProduct > 0.5f)
+                // Check if the player is within the follow distance
+                if (distanceToPlayer > followDistance)
                 {
-                    // Calculate direction away from player
-                    Vector3 retreatDirection = (transform.position - playerTransform.position).normalized;
-                    Vector3 retreatPosition = transform.position + retreatDirection * retreatDistance;
-
-                    currentState = EnemyState.Retreat;
-                    navMeshAgent.SetDestination(retreatPosition);
-                    transform.LookAt(playerTransform.position);
-                    break;
+                    currentState = EnemyState.Idle;
+                    SetRandomIdleDestination();
                 }
+                else
+                {
+                    // Check if the flashlight is pointing towards the enemy and it's turned on
+                    Vector3 directionToEnemy = (transform.position - flashlight.transform.position).normalized;
+                    if (Vector3.Dot(flashlight.transform.forward, directionToEnemy) > 0.5f && flashlight.GetComponent<Light>().enabled)
+                    {
+                        // Calculate direction away from player
+                        Vector3 retreatDirection = (transform.position - playerTransform.position).normalized;
+                        Vector3 retreatPosition = transform.position + retreatDirection * retreatDistance;
 
-                // Calculate path to the player and set it as the destination
-                navMeshAgent.SetDestination(playerTransform.position);
+                        currentState = EnemyState.Retreat;
+                        navMeshAgent.SetDestination(retreatPosition);
+                        transform.LookAt(playerTransform.position);
+                    }
+                    else
+                    {
+                        // Calculate path to the player and set it as the destination
+                        navMeshAgent.SetDestination(playerTransform.position);
+                    }
+                }
                 break;
 
             case EnemyState.Retreat:
