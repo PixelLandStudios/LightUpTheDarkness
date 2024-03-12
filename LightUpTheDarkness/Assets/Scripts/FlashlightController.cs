@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class FlashlightController : MonoBehaviour
 {
     public Light flashlight;
     public float activeDuration = 3f; // Duration for which the flashlight remains active
-    public float cooldownDuration = 2f; // Cooldown duration between flashlight uses
+    public float cooldownDuration = 3f; // Cooldown duration between flashlight uses
+    public Slider batterySlider; // Reference to the battery slider UI component
+    public Image batterySliderImage; // Reference to the battery slider UI component
 
     private bool isFlashlightOn = false;
     private float lastActivationTime = 0f;
@@ -16,6 +19,8 @@ public class FlashlightController : MonoBehaviour
 
     private float timeElapsedWhileOn = 0f;
     private float timeElapsedWhileOff = 0f;
+
+    bool isRecharging;
 
     void OnEnable()
     {
@@ -48,10 +53,12 @@ public class FlashlightController : MonoBehaviour
 
             // Reset timer when turning off flashlight
             timeElapsedWhileOff = 0f;
+            batterySliderImage.color = Color.black;
         }
         // If flashlight is off and duration has exceeded cooldown duration
         else if (!isFlashlightOn && timeElapsedWhileOff >= cooldownDuration)
         {
+            batterySliderImage.color = Color.white;
             isInCooldown = false;
         }
 
@@ -60,11 +67,31 @@ public class FlashlightController : MonoBehaviour
         {
             timeElapsedWhileOn += Time.deltaTime;
             timeElapsedWhileOff = 0f;
+
+            // Update battery slider based on the remaining active duration
+            float remainingBattery = Mathf.Clamp01(1f - (timeElapsedWhileOn / activeDuration));
+            batterySlider.value = remainingBattery;
         }
-        else
+        else if (isInCooldown)
         {
             timeElapsedWhileOff += Time.deltaTime;
             timeElapsedWhileOn = 0f;
+
+            // Update battery slider during cooldown
+            float remainingCooldown = Mathf.Clamp01(timeElapsedWhileOff / cooldownDuration);
+            batterySlider.value = remainingCooldown;
+        }
+        else if (isRecharging)
+        {
+            timeElapsedWhileOn -= Time.deltaTime;
+
+            Debug.Log(timeElapsedWhileOn);
+
+            float remainingBattery = Mathf.Clamp01(1f - (timeElapsedWhileOn / activeDuration));
+            batterySlider.value = remainingBattery;
+
+            if (timeElapsedWhileOn <= 0)
+                isRecharging = false;
         }
     }
 
@@ -78,6 +105,12 @@ public class FlashlightController : MonoBehaviour
 
     void OnTriggerCanceled(InputAction.CallbackContext context)
     {
+        // If flashlight is turned off prematurely, store the premature off time
+        if (isFlashlightOn)
+        {
+            isRecharging = true;
+        }
+
         // Turn off flashlight when trigger is released
         ToggleFlashlight(false);
     }
