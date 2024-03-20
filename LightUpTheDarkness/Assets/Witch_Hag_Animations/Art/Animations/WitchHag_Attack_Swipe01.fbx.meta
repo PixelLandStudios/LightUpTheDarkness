@@ -57,7 +57,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
@@ -859,7 +859,8 @@ ModelImporter:
     - name: ik_hand_r
       parentName: ik_hand_gun
       position: {x: -0, y: 0, z: 0}
-      rotation: {x: -0.000000111758695, y: -0.000000007450585, z: 0.000000029802326, w: 1}
+      rotation: {x: -0.000000111758695, y: -0.000000007450585, z: 0.000000029802326,
+        w: 1}
       scale: {x: 0.9999999, y: 1.0000001, z: 1.0000001}
     - name: ik_hand_l
       parentName: ik_hand_gun
@@ -893,7 +894,8 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 2961c0373b69f844d9267a76312889ee, type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 2961c0373b69f844d9267a76312889ee,
+    type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1

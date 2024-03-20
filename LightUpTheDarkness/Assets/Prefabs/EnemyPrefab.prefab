@@ -1221,6 +1221,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1608363989571119948}
+  - component: {fileID: 8012476404835183056}
+  - component: {fileID: 5193995370082772591}
   m_Layer: 0
   m_Name: EnemyPrefab
   m_TagString: Untagged
@@ -1244,6 +1246,52 @@ Transform:
   - {fileID: 5284954294055444288}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &8012476404835183056
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4410795090985127345}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 0.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 200
+  m_StoppingDistance: 0.5
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &5193995370082772591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4410795090985127345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2de74bff39bc5459f894874efaa034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  followDistance: 10
+  retreatDistance: 5
+  retreatSpeed: 2
+  walkingRadius: 5
+  attackDuration: 1.5
+  idleDuration: 5.5
+  EnemyAnimator: {fileID: 4535446366651094449}
+  IdleAnimation: {fileID: 9100000, guid: 0e3f85fa71dc84e459435b7873be3cdb, type: 2}
+  WalkAnimation: {fileID: 9100000, guid: ded39c227c25e424bad8af52c79ad9c8, type: 2}
+  FollowAnimation: {fileID: 9100000, guid: 11ce843243cfda646b556a0e00ceec8c, type: 2}
+  AttackAnimation: {fileID: 9100000, guid: eafad91c6e744ee42a9776be9f403fdb, type: 2}
+  flashlight: {fileID: 0}
 --- !u!1 &4574204083928796156
 GameObject:
   m_ObjectHideFlags: 0
@@ -1741,10 +1789,10 @@ Animator:
   m_GameObject: {fileID: 7207374173251300523}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 6b224900e896deb4f887a3147fbef710, type: 3}
-  m_Controller: {fileID: 9100000, guid: 34808f6231cadb448a096b3879e48343, type: 2}
+  m_Controller: {fileID: 9100000, guid: ded39c227c25e424bad8af52c79ad9c8, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
