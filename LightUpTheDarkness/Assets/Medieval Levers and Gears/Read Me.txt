@@ -1,0 +1,14 @@
+Medieval Levers and Gears 
+
+- Simply drag and drop the prefabs into the scene
+
+	1. Simply drag and drop the data scirpt to an empty gameobject.
+	2. Simply drag and drop the movement script to an player gameobject with character controller and rigidbody.
+	3. Set an interaction range value in data gameobject.
+	4. Select an intreaction based on the mesh which you want to intreacts.
+	5. Drag and drop the prefab into the data gameobject
+	6. In Lever intreaction, select an direction to rotate and set the values in maximum and minimum to rotate the gameobject.
+	7. In Scroll interaction, select an direction to rotate and set the values in maximum and minimum to rotate the gameobject.
+	 
+
+If there is any issues with the models, Kindly contact us on admin@devdensolutions.com
