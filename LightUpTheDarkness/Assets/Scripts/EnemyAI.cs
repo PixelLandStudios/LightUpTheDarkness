@@ -10,6 +10,7 @@ public class EnemyAI : MonoBehaviour
     public float walkingRadius = 5f; // Radius within which the enemy wanders in idle state
     public float attackDuration = 1.5f; // Duration of attack animation
     public float idleDuration = 5.5f; // Duration of attack animation
+    public float runningSpeed = 2f; // Duration of attack animation
 
     private EnemyState currentState = EnemyState.Walk;
     private Transform playerTransform;
@@ -43,14 +44,35 @@ public class EnemyAI : MonoBehaviour
 
         switch (currentState)
         {
+            //case EnemyState.Walk:
+            //    EnemyAnimator.runtimeAnimatorController = WalkAnimation;
+            //    navMeshAgent.speed = 0.5f;
+
+            //    if (distanceToPlayer <= followDistance)
+            //    {
+            //        currentState = EnemyState.Follow;
+            //        break;
+            //    }
+
+            //    if (Vector3.Distance(transform.position, idleDestination) < navMeshAgent.stoppingDistance)
+            //    {
+            //        SetRandomIdleDestination();
+            //    }
+            //    break;
+
             case EnemyState.Walk:
                 EnemyAnimator.runtimeAnimatorController = WalkAnimation;
                 navMeshAgent.speed = 0.5f;
 
                 if (distanceToPlayer <= followDistance)
                 {
-                    currentState = EnemyState.Follow;
-                    break;
+                    // Check if player is within the navmesh area
+                    NavMeshHit hit;
+                    if (NavMesh.SamplePosition(playerTransform.position, out hit, 1.0f, NavMesh.AllAreas))
+                    {
+                        currentState = EnemyState.Follow;
+                        break;
+                    }
                 }
 
                 if (Vector3.Distance(transform.position, idleDestination) < navMeshAgent.stoppingDistance)
@@ -59,9 +81,42 @@ public class EnemyAI : MonoBehaviour
                 }
                 break;
 
+            //case EnemyState.Follow:
+            //    EnemyAnimator.runtimeAnimatorController = FollowAnimation;
+            //    navMeshAgent.speed = 1f;
+
+            //    if (distanceToPlayer <= navMeshAgent.stoppingDistance) //check if attack is on cooldown
+            //    {
+            //        currentState = EnemyState.Attack;
+            //        AttackPlayer();
+            //    }
+            //    else if (distanceToPlayer > followDistance)
+            //    {
+            //        currentState = EnemyState.Walk;
+            //        SetRandomIdleDestination();
+            //    }
+            //    else
+            //    {
+            //        Vector3 directionToEnemy = (transform.position - flashlight.transform.position).normalized;
+            //        if (Vector3.Dot(flashlight.transform.forward, directionToEnemy) > 0.5f && flashlight.GetComponent<Light>().enabled)
+            //        {
+            //            Vector3 retreatDirection = (transform.position - playerTransform.position).normalized;
+            //            Vector3 retreatPosition = transform.position + retreatDirection * retreatDistance;
+
+            //            currentState = EnemyState.Retreat;
+            //            navMeshAgent.SetDestination(retreatPosition);
+            //            transform.LookAt(playerTransform.position);
+            //        }
+            //        else
+            //        {
+            //            navMeshAgent.SetDestination(playerTransform.position);
+            //        }
+            //    }
+            //    break;
+
             case EnemyState.Follow:
                 EnemyAnimator.runtimeAnimatorController = FollowAnimation;
-                navMeshAgent.speed = 1f;
+                navMeshAgent.speed = runningSpeed;
 
                 if (distanceToPlayer <= navMeshAgent.stoppingDistance) //check if attack is on cooldown
                 {
@@ -75,19 +130,30 @@ public class EnemyAI : MonoBehaviour
                 }
                 else
                 {
-                    Vector3 directionToEnemy = (transform.position - flashlight.transform.position).normalized;
-                    if (Vector3.Dot(flashlight.transform.forward, directionToEnemy) > 0.5f && flashlight.GetComponent<Light>().enabled)
+                    // Check if player is within the navmesh area
+                    NavMeshHit hit;
+                    if (NavMesh.SamplePosition(playerTransform.position, out hit, 1.0f, NavMesh.AllAreas))
                     {
-                        Vector3 retreatDirection = (transform.position - playerTransform.position).normalized;
-                        Vector3 retreatPosition = transform.position + retreatDirection * retreatDistance;
+                        Vector3 directionToEnemy = (transform.position - flashlight.transform.position).normalized;
+                        if (Vector3.Dot(flashlight.transform.forward, directionToEnemy) > 0.5f && flashlight.GetComponent<Light>().enabled)
+                        {
+                            Vector3 retreatDirection = (transform.position - playerTransform.position).normalized;
+                            Vector3 retreatPosition = transform.position + retreatDirection * retreatDistance;
 
-                        currentState = EnemyState.Retreat;
-                        navMeshAgent.SetDestination(retreatPosition);
-                        transform.LookAt(playerTransform.position);
+                            currentState = EnemyState.Retreat;
+                            navMeshAgent.SetDestination(retreatPosition);
+                            transform.LookAt(playerTransform.position);
+                        }
+                        else
+                        {
+                            navMeshAgent.SetDestination(playerTransform.position);
+                        }
                     }
                     else
                     {
-                        navMeshAgent.SetDestination(playerTransform.position);
+                        // Player is outside the navmesh, stop following
+                        currentState = EnemyState.Walk;
+                        SetRandomIdleDestination();
                     }
                 }
                 break;

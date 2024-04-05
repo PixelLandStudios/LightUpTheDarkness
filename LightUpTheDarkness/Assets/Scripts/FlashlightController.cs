@@ -85,7 +85,7 @@ public class FlashlightController : MonoBehaviour
         {
             timeElapsedWhileOn -= Time.deltaTime;
 
-            Debug.Log(timeElapsedWhileOn);
+            //Debug.Log(timeElapsedWhileOn);
 
             float remainingBattery = Mathf.Clamp01(1f - (timeElapsedWhileOn / activeDuration));
             batterySlider.value = remainingBattery;

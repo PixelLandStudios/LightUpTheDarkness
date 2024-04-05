@@ -67,4 +67,12 @@ public class Door : MonoBehaviour
             trig = false;
         }
     }
+
+    public void OpenDoor()
+    {
+        Debug.Log("OPEN");
+        open = true;
+
+        GameObject.Find("Front_Door_Wall_Collider").SetActive(false);
+    }
 }
