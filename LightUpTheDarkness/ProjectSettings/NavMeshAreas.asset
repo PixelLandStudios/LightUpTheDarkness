@@ -11,9 +11,9 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
-  - name: 
+  - name: EnemyArea1
     cost: 1
-  - name: 
+  - name: EnemyArea2
     cost: 1
   - name: 
     cost: 1
