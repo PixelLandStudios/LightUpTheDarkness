@@ -7,6 +7,9 @@ public class LightSwitchScript : MonoBehaviour
     [SerializeField]
     List<Light> Lights;
 
+    [SerializeField]
+    GameObject TextMessage1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +28,11 @@ public class LightSwitchScript : MonoBehaviour
         {
             item.enabled = true;
         }
+
+        //monster screech
+
+        //remove TextMessage1
+        GameObject.Destroy(TextMessage1);
     }
 
     public void TurnLightOff()
