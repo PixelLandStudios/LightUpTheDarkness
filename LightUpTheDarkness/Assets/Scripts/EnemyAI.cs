@@ -39,14 +39,10 @@ public class EnemyAI : MonoBehaviour
         else
             areaMask = 1 << NavMesh.GetAreaFromName(areaMaskName);
 
-        Debug.Log(areaMask);
-
         //areaMask = 1 << NavMesh.GetAreaFromName("EnemyGround2");
         //areaMask = NavMesh.AllAreas;
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         navMeshAgent = GetComponent<NavMeshAgent>();
-
-        Debug.Log(navMeshAgent.areaMask);
 
         initialPosition = transform.position;
         SetRandomIdleDestination();

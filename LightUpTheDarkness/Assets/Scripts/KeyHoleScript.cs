@@ -4,23 +4,32 @@ using UnityEngine;
 
 public class KeyHoleScript : MonoBehaviour
 {
+    [SerializeField]
+    Door door;
+
+    [SerializeField]
+    GameObject Message;
+
+    [SerializeField]
+    GameObject KeyHoleUnlocked;
+
+    public bool OpenTheDoor = false;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
-    }
+        if (OpenTheDoor)
+        {
+            OpenTheDoor = false;
+            door.OpenDoor();
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log(collision.gameObject.name);
-
-        
+            this.GetComponent<AudioSource>().Play();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -29,7 +38,23 @@ public class KeyHoleScript : MonoBehaviour
         {
             GameObject.Destroy(other.gameObject);
 
+            Message.SetActive(false);
+
             //open door
+            door.OpenDoor();
+
+            this.GetComponent<AudioSource>().Play();
         }
+    }
+
+    public void OnSelect()
+    {
+        this.GetComponent<AudioSource>().Play();
+
+        Message.SetActive(true);
+
+        KeyHoleUnlocked.SetActive(true);
+
+        GameObject.Destroy(this);
     }
 }

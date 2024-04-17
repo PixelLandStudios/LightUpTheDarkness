@@ -9,6 +9,8 @@ TagManager:
   - Flame
   - Destroyer
   - Key
+  - stopper
+  - LeverHandle
   layers:
   - Default
   - TransparentFX
