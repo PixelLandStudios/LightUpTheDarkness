@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    public enum EnemyState { Walk, Follow, Retreat, Attack, Idle }
+    public enum EnemyState { Walk, Follow, Retreat, Attack, Idle, Die }
     public float followDistance = 10f; // Adjust this distance as needed
     public float retreatDistance = 5f; // Distance at which the enemy starts retreating
     public float retreatSpeed = 2f; // Speed at which the enemy retreats
@@ -21,12 +21,15 @@ public class EnemyAI : MonoBehaviour
     private float attackTimer = 0f;
     private float idleTimer = 0f;
     int areaMask = -1;
+    bool IsDying = false;
+    bool isDead = false;
 
     [SerializeField] Animator EnemyAnimator;
     [SerializeField] RuntimeAnimatorController IdleAnimation;
     [SerializeField] RuntimeAnimatorController WalkAnimation;
     [SerializeField] RuntimeAnimatorController FollowAnimation;
     [SerializeField] RuntimeAnimatorController AttackAnimation;
+    [SerializeField] RuntimeAnimatorController DeathAnimation;
     [SerializeField] string areaMaskName;
 
     // Reference to the flashlight GameObject
@@ -50,6 +53,9 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+            return;
+
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
         switch (currentState)
@@ -178,7 +184,30 @@ public class EnemyAI : MonoBehaviour
                     SetRandomIdleDestination();
                 }
                 break;
+
+            case EnemyState.Die:
+                if (!isAttacking)
+                {
+                    AttackPlayer();
+                }
+                else
+                {
+                    attackTimer += Time.deltaTime;
+                    if (attackTimer >= attackDuration)
+                    {
+                        currentState = EnemyState.Idle;
+                        StayIdle();
+                        isAttacking = false;
+                        attackTimer = 0f;
+                    }
+                }
+                break;
         }
+    }
+
+    public void KillEnemy()
+    { 
+
     }
 
     void AttackPlayer()

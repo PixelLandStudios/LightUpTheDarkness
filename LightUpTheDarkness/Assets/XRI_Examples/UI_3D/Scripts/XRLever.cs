@@ -1,3 +1,4 @@
+using UnityEngine.Animations;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -9,6 +10,10 @@ namespace UnityEngine.XR.Content.Interaction
     public class XRLever : XRBaseInteractable
     {
         const float k_LeverDeadZone = 0.1f; // Prevents rapid switching between on and off states when right in the middle
+
+        [SerializeField]
+        [Tooltip("The axis that the handle will rotate on")]
+        Axis RotationAxis = Axis.X;
 
         [SerializeField]
         [Tooltip("The object that is visually grabbed and manipulated")]
@@ -197,8 +202,27 @@ namespace UnityEngine.XR.Content.Interaction
 
         void SetHandleAngle(float angle)
         {
+            //if (m_Handle != null)
+            //    m_Handle.localRotation = Quaternion.Euler(angle, 0.0f, 0.0f);
+
             if (m_Handle != null)
-                m_Handle.localRotation = Quaternion.Euler(angle, 0.0f, 0.0f);
+            {
+                switch (RotationAxis)
+                {
+                    case Axis.None:
+                        m_Handle.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+                        break;
+                    case Axis.X:
+                        m_Handle.localRotation = Quaternion.Euler(angle, 0.0f, 0.0f);
+                        break;
+                    case Axis.Y:
+                        m_Handle.localRotation = Quaternion.Euler(0.0f, angle, 0.0f);
+                        break;
+                    case Axis.Z:
+                        m_Handle.localRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+                        break;
+                }
+            }
         }
 
         void OnDrawGizmosSelected()
