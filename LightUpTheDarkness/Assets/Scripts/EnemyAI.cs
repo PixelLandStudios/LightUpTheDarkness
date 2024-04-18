@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
     public float retreatSpeed = 2f; // Speed at which the enemy retreats
     public float walkingRadius = 5f; // Radius within which the enemy wanders in idle state
     public float attackDuration = 1.5f; // Duration of attack animation
+    public float deathDuration = 6.1f; // Duration of attack animation
     public float idleDuration = 5.5f; // Duration of attack animation
     public float runningSpeed = 2f; // Duration of attack animation
 
@@ -19,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     private Vector3 idleDestination;
     private bool isAttacking = false;
     private float attackTimer = 0f;
+    private float deathTimer = 0f;
     private float idleTimer = 0f;
     int areaMask = -1;
     bool IsDying = false;
@@ -184,30 +186,14 @@ public class EnemyAI : MonoBehaviour
                     SetRandomIdleDestination();
                 }
                 break;
-
-            case EnemyState.Die:
-                if (!isAttacking)
-                {
-                    AttackPlayer();
-                }
-                else
-                {
-                    attackTimer += Time.deltaTime;
-                    if (attackTimer >= attackDuration)
-                    {
-                        currentState = EnemyState.Idle;
-                        StayIdle();
-                        isAttacking = false;
-                        attackTimer = 0f;
-                    }
-                }
-                break;
         }
     }
 
     public void KillEnemy()
-    { 
-
+    {
+        navMeshAgent.enabled = false;
+        EnemyAnimator.runtimeAnimatorController = DeathAnimation;
+        isDead = true;
     }
 
     void AttackPlayer()
