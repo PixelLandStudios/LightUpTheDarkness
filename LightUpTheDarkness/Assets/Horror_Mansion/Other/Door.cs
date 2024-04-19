@@ -73,6 +73,9 @@ public class Door : MonoBehaviour
         Debug.Log("OPEN");
         open = true;
 
-        GameObject.Find("Front_Door_Wall_Collider").SetActive(false);
+        if (GameObject.Find("Front_Door_Wall_Collider") != null)
+            GameObject.Find("Front_Door_Wall_Collider").SetActive(false);
+
+        this.GetComponent<AudioSource>().Play();
     }
 }

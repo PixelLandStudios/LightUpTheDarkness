@@ -25,11 +25,4 @@ public class ChandelierScript : MonoBehaviour
         float AbsX = Mathf.Abs(x);
         Chandelier.localPosition = new Vector3(Chandelier.localPosition.x, Chandelier.localPosition.y - (AbsX / 1000), Chandelier.localPosition.z);
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.name);
-        GameObject.Find("ChandelierLever").GetComponent<ChandelierScript>().enabled = false;
-        GameObject.Find("ChandelierLever").GetComponent<XRKnob>().enabled = false;
-    }
 }

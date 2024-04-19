@@ -18,5 +18,7 @@ public class ItemPickupScript : MonoBehaviour
         Item.SetActive(true);
 
         this.GetComponent<AudioSource>().Play();
+
+        GameObject.Destroy(this);
     }
 }

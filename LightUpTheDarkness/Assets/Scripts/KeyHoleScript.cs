@@ -42,8 +42,6 @@ public class KeyHoleScript : MonoBehaviour
 
             //open door
             door.OpenDoor();
-
-            this.GetComponent<AudioSource>().Play();
         }
     }
 

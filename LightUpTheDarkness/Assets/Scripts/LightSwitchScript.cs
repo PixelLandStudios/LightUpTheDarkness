@@ -10,6 +10,12 @@ public class LightSwitchScript : MonoBehaviour
     [SerializeField]
     GameObject TextMessage1;
 
+    [SerializeField]
+    bool PlayMonsterScreech;
+
+    [SerializeField]
+    AudioSource MonsterScreech;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,6 +36,8 @@ public class LightSwitchScript : MonoBehaviour
         }
 
         //monster screech
+        if (PlayMonsterScreech)
+            MonsterScreech.Play();
 
         //remove TextMessage1
         GameObject.Destroy(TextMessage1);

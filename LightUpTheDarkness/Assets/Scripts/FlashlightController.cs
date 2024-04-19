@@ -20,6 +20,15 @@ public class FlashlightController : MonoBehaviour
     private float timeElapsedWhileOn = 0f;
     private float timeElapsedWhileOff = 0f;
 
+    [SerializeField]
+    AudioSource audio;
+
+    [SerializeField]
+    AudioClip FlashlightOn;
+
+    [SerializeField]
+    AudioClip FlashlightOff;
+
     bool isRecharging;
 
     void OnEnable()
@@ -100,6 +109,9 @@ public class FlashlightController : MonoBehaviour
         if (!isInCooldown)
         {
             ToggleFlashlight(true);
+
+            audio.clip = FlashlightOn;
+            audio.Play();
         }
     }
 
@@ -113,6 +125,9 @@ public class FlashlightController : MonoBehaviour
 
         // Turn off flashlight when trigger is released
         ToggleFlashlight(false);
+
+        audio.clip = FlashlightOff;
+        audio.Play();
     }
 
     void ToggleFlashlight(bool toggle)
